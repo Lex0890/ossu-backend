@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model OsuUser {
+  id           Int      @id @default(autoincrement())
+  osuId        Int      @unique
+  username     String   @unique
+  avatarUrl    String?
+  country      String?
+  accessToken  String
+  refreshToken String
+  hoursPlayed Float?
+  pp Float?
+  rank Int?
+  countryRank Int?
+  accuracy Float?
+  level Float?
+  posts FeedItem[]
+  comments Comment[]
+  likes Like[]
+  folowers Follow[]     @relation("followers")
+  following Follow[]    @relation("following")
+  interests Tag[]       @relation("UserInterests")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+
+model FeedItem {
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  Title       String
+  content     String
+  imageUrl    String?
+  tags        Tag[]        @relation("PostTags")
+  createdAt   DateTime     @default(now())
+  user        OsuUser         @relation(fields: [userId], references: [id])
+  likes       Like[]
+  comments    Comment[]
+}
+
+model Like {
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  postId      Int?
+  commentId   Int?
+  createdAt   DateTime     @default(now())
+  user        OsuUser         @relation(fields: [userId], references: [id])
+  post        FeedItem?     @relation(fields: [postId], references: [id])
+  comment     Comment?     @relation(fields: [commentId], references: [id])
+}
+
+model Follow {
+  id          Int          @id @default(autoincrement())
+  followerId  Int
+  followingId Int
+  createdAt   DateTime     @default(now())
+  follower    OsuUser         @relation("followers", fields: [followerId], references: [id])
+  following   OsuUser         @relation("following", fields: [followingId], references: [id])
+}
+
+model Tag {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  posts       FeedItem[]   @relation("PostTags")
+  users       OsuUser[]    @relation("UserInterests")
+}
+model Comment {
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  postId      Int
+  content     String
+  likes      Like[]
+  createdAt   DateTime     @default(now())
+  user        OsuUser      @relation(fields: [userId], references: [id])
+  post        FeedItem     @relation(fields: [postId], references: [id])
+}
+

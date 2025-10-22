@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "OsuUser" ADD COLUMN     "accuracy" DOUBLE PRECISION,
+ADD COLUMN     "countryRank" INTEGER,
+ADD COLUMN     "level" DOUBLE PRECISION,
+ADD COLUMN     "pp" DOUBLE PRECISION,
+ADD COLUMN     "rank" INTEGER;
