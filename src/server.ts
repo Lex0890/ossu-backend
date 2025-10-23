@@ -31,14 +31,14 @@ app.use(morgan(logFormat, { stream: logStream }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://10.0.0.81:5173'], // 👈 tu frontend
+    origin: ['http://localhost:5173', `${process.env.FRONTEND_URL}`], // 👈 tu frontend
     credentials: true, // 👈 permite enviar cookies
   })
 );
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; connect-src 'self' http://10.0.0.81:3001 ws://192.168.56.1:3001 http://localhost:5173 http://10.0.0.81:5173; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+    `default-src 'self'; connect-src 'self' ${process.env.BASEURL} ws://192.168.56.1:3001 http://localhost:5173 ${process.env.FRONTEND_URL}; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';`
   );
   next();
 });
