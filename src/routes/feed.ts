@@ -15,7 +15,7 @@ router.delete('/:id'); // delete a specific post
 router.post('/:id/like', authMiddleware, feed.likePost); // like or unlike a post
 router.post('/:id/comment', authMiddleware, feed.commentPost); // add a comment to a post
 router.post('/:id/comment/:commentId/like', authMiddleware, feed.likeComment); // like or unlike a comment
-router.put('/:id/comment/:commentId'); // update a comment on a post
-router.delete('/:id/comment/:commentId'); // delete a comment from a post
+router.put('/:id/comment/:commentId', authMiddleware, feed.updateComment); // update a comment on a post
+router.delete('/:id/comment/:commentId', authMiddleware, feed.deleteComment); // delete a comment from a post
 
 export default router;

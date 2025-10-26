@@ -5,10 +5,11 @@ import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import pino from 'pino';
-import authRoutes from './routes/auth';
+import authRoutes from '@routes/auth';
 import cors from 'cors';
-import prisma from './prisma';
+import prisma from 'src/prisma';
 import authMiddleware from './middlewares/authMiddleware';
+import feedRoutes from '@routes/feed';
 
 const logger = pino({
   transport: {
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/auth', authRoutes);
+app.use('/feed', feedRoutes);
 
 app.get('/me', authMiddleware, async (req, res) => {
   const userId = (req as any).user.userId;

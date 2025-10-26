@@ -5,3 +5,9 @@ node_modules
 /src/access.log
 
 /src/generated/prisma
+
+.vercel
+
+/prisma/migrations
+
+/dist

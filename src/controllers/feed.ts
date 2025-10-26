@@ -1,10 +1,11 @@
-import { FeedItem } from '@prisma/client';
+import type { FeedItem } from '@prisma/client';
 import { Request, Response } from 'express';
 import prisma from 'src/prisma';
 import { logger } from 'src/server';
 const feed = {
   async getFeed(req: Request, res: Response) {
     // logic to get the feed of posts
+    const { lastCreatedAt, lastId, limit = 10 } = req.query;
     const userId = parseInt(req.body.userId);
 
     try {
@@ -27,24 +28,37 @@ const feed = {
       const posts = await prisma.feedItem.findMany({
         where: {
           OR: [
-            { userId: { in: followingIds } }, // posts de seguidos
-            { tags: { some: { name: { in: interestNames } } } }, // tags que me gustan
+            { userId: { in: followingIds } },
+            { tags: { some: { name: { in: interestNames } } } },
           ],
         },
-        include: {
+        select: {
           user: { select: { id: true, username: true, avatarUrl: true } },
           _count: { select: { likes: true } },
+          content: true,
+          Title: true,
+          createdAt: true,
+          id: true,
           tags: true,
         },
-        orderBy: { createdAt: 'desc' },
-        take: 50,
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        take: Number(limit),
+        ...(lastCreatedAt && lastId
+          ? {
+              skip: 1,
+              cursor: {
+                createdAt: new Date(lastCreatedAt as string),
+                id: Number(lastId),
+              },
+            }
+          : {}),
       });
 
       // 4️⃣ score posts
 
       const scoredPosts = posts.map((p) => {
         let score = 0;
-        if (followingIds.includes(p.userId)) score += 5;
+        if (followingIds.includes(p.user.id)) score += 5;
         if (p.tags.some((t) => interestNames.includes(t.name))) score += 3;
         score += Math.floor(p._count.likes / 10);
         const age = (Date.now() - new Date(p.createdAt).getTime()) / (1000 * 60 * 60);
@@ -53,7 +67,18 @@ const feed = {
       });
 
       scoredPosts.sort((a, b) => b.score - a.score);
-      res.json(scoredPosts);
+      const nextCursor =
+        scoredPosts.length > 0
+          ? {
+              lastCreatedAt: scoredPosts[scoredPosts.length - 1].createdAt,
+              lastId: scoredPosts[scoredPosts.length - 1].id,
+            }
+          : null;
+
+      res.json({
+        posts: scoredPosts,
+        nextCursor,
+      });
     } catch (error) {
       logger.error(error);
       res.status(500).json({ error: 'Error al generar feed personalizado' });
@@ -192,7 +217,7 @@ const feed = {
         where: { commentId, userId },
       });
       if (existingLike) {
-        const eliminatedLike = await prisma.like.delete({
+        const _eliminatedLike = await prisma.like.delete({
           where: { id: existingLike.id },
         });
         return res.status(200).json({ liked: false });
@@ -203,6 +228,46 @@ const feed = {
       return res.status(201).json({ liked: true, likeId: newLike.id });
     } catch (error) {
       logger.error(`Error linking/unlinking comment: ${error}`);
+    }
+  },
+  async updateComment(req: Request, res: Response) {
+    // logic to update a comment on a post
+    const commentId = parseInt(req.params.commentId);
+    const content = req.body.content;
+    try {
+      const existingComment = await prisma.comment.findUnique({
+        where: { id: commentId },
+      });
+      if (!existingComment) {
+        return res.status(404).json({ error: 'Comment not found' });
+      }
+      const updatedComment = await prisma.comment.update({
+        where: { id: commentId },
+        data: { content: content },
+      });
+      res.status(200).json({ updatedComment });
+    } catch (error) {
+      logger.error(`Error updating comment: ${error}`);
+      res.status(500).json({ error: 'Error updating comment' });
+    }
+  },
+  async deleteComment(req: Request, res: Response) {
+    // logic to delete a comment from a post
+    const commentId = parseInt(req.params.commentId);
+    try {
+      const existingComment = await prisma.comment.findUnique({
+        where: { id: commentId },
+      });
+      if (!existingComment) {
+        return res.status(404).json({ error: 'Comment not found' });
+      }
+      await prisma.comment.delete({
+        where: { id: commentId },
+      });
+      res.status(200).json({ message: 'Comment deleted successfully' });
+    } catch (error) {
+      logger.error(`Error deleting comment: ${error}`);
+      res.status(500).json({ error: 'Error deleting comment' });
     }
   },
 };
