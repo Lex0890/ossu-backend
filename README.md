@@ -1,72 +1,75 @@
 # OSSU Backend API
 
-API REST para red social de la comunidad osu! construida con Express.js, TypeScript, Prisma y PostgreSQL.
+> REST API for an osu! community social network built with Express.js, TypeScript, Prisma, and PostgreSQL.
 
-## 🚀 Estado Actual
+[🇪🇸 Versión en Español](./README.es.md)
 
-### Funcionalidades Implementadas
+## 🚀 Current Status
 
-#### Autenticación OAuth2
-- ✅ Login con osu! OAuth
-- ✅ Gestión de tokens (access & refresh)
-- ✅ Middleware de autenticación JWT
-- ✅ Cookies seguras para sesiones
+### Implemented Features
+
+#### OAuth2 Authentication
+- ✅ osu! OAuth login
+- ✅ Token management (access & refresh)
+- ✅ JWT authentication middleware
+- ✅ Secure session cookies
 - ✅ Logout
 
-#### Sistema de Usuarios
-- ✅ Sincronización automática con API de osu!
-- ✅ Almacenamiento de estadísticas: PP, rank, accuracy, nivel
-- ✅ Sistema de follow/followers
-- ✅ Intereses personalizados (tags)
+#### User System
+- ✅ Auto-sync with osu! API
+- ✅ Stats storage: PP, rank, accuracy, level
+- ✅ Follow/followers system
+- ✅ Personalized interests (tags)
 
-#### Feed Social
-- ✅ Publicaciones con título, contenido e imágenes
-- ✅ Sistema de tags para categorizar posts
-- ✅ Feed personalizado basado en:
-  - Usuarios que sigues
-  - Tus intereses (tags)
-  - Popularidad (likes)
-  - Recencia (posts recientes)
-- ✅ Paginación cursor-based
-- ✅ CRUD completo de posts
+#### Social Feed
+- ✅ Posts with title, content, and images
+- ✅ Tag system for categorizing posts
+- ✅ Personalized feed based on:
+  - Users you follow
+  - Your interests (tags)
+  - Popularity (likes)
+  - Recency (recent posts)
+- ✅ Cursor-based pagination
+- ✅ Complete CRUD for posts
 
-#### Interacciones Sociales
-- ✅ Likes en posts y comentarios
-- ✅ Sistema de comentarios
-- ✅ CRUD de comentarios
+#### Social Interactions
+- ✅ Likes on posts and comments
+- ✅ Comment system
+- ✅ CRUD for comments
 
-## 🛠 Stack Tecnológico
+## 🛠 Tech Stack
 
-- **Runtime**: Node.js con Bun
+- **Runtime**: Node.js with Bun
 - **Framework**: Express.js 5
-- **Lenguaje**: TypeScript
+- **Language**: TypeScript
 - **ORM**: Prisma
-- **Base de datos**: PostgreSQL
-- **Autenticación**: JWT + osu! OAuth2
+- **Database**: PostgreSQL
+- **Authentication**: JWT + osu! OAuth2
 - **Logging**: Pino + Morgan
 - **Deploy**: Vercel
 
-## 📦 Instalación
+## 📦 Installation
+## 📦 Installation
 
 ```bash path=null start=null
-# Clonar repositorio
+# Clone repository
 git clone <repo-url>
 cd api
 
-# Instalar dependencias
+# Install dependencies
 bun install
 
-# Configurar variables de entorno
+# Configure environment variables
 cp .env.example .env
 
-# Ejecutar migraciones
+# Run migrations
 bun prisma migrate dev
 
-# Iniciar servidor de desarrollo
+# Start development server
 bun run dev
 ```
 
-## 🔧 Variables de Entorno
+## 🔧 Environment Variables
 
 ```bash path=null start=null
 DATABASE_URL=postgresql://...
@@ -80,78 +83,78 @@ BASEURL=http://localhost:3000
 PORT=3000
 ```
 
-## 📚 Endpoints Disponibles
+## 📚 Available Endpoints
 
-### Autenticación
-- `GET /auth` - Inicia OAuth con osu!
-- `GET /auth/callback` - Callback de OAuth
-- `POST /auth/logout` - Cierra sesión
-- `GET /me` - Obtiene usuario autenticado
+### Authentication
+- `GET /auth` - Start OAuth with osu!
+- `GET /auth/callback` - OAuth callback
+- `POST /auth/logout` - Logout
+- `GET /me` - Get authenticated user
 
 ### Feed
-- `GET /feed` - Obtiene feed personalizado
-- `POST /feed` - Crea nuevo post
-- `GET /feed/:id` - Obtiene post específico
-- `PUT /feed/:id` - Actualiza post
-- `DELETE /feed/:id` - Elimina post
+- `GET /feed` - Get personalized feed
+- `POST /feed` - Create new post
+- `GET /feed/:id` - Get specific post
+- `PUT /feed/:id` - Update post
+- `DELETE /feed/:id` - Delete post
 - `POST /feed/:id/like` - Like/unlike post
-- `POST /feed/:id/comment` - Comenta en post
-- `POST /feed/:id/comment/:commentId/like` - Like/unlike comentario
-- `PUT /feed/:id/comment/:commentId` - Actualiza comentario
-- `DELETE /feed/:id/comment/:commentId` - Elimina comentario
+- `POST /feed/:id/comment` - Comment on post
+- `POST /feed/:id/comment/:commentId/like` - Like/unlike comment
+- `PUT /feed/:id/comment/:commentId` - Update comment
+- `DELETE /feed/:id/comment/:commentId` - Delete comment
 
-## 🔮 Roadmap - Próximas Funcionalidades
+## 🔮 Roadmap - Upcoming Features
 
-### 🎯 Corto Plazo
-- [ ] Sistema de notificaciones en tiempo real (WebSockets)
-- [ ] Búsqueda avanzada de usuarios y posts
-- [ ] Perfiles de usuario completos
-- [ ] Configuración de privacidad
-- [ ] Rate limiting y throttling
-- [ ] Validación de datos con Zod
-- [ ] Tests unitarios e integración
+### 🎯 Short Term
+- [ ] Real-time notification system (WebSockets)
+- [ ] Advanced user and post search
+- [ ] Complete user profiles
+- [ ] Privacy settings
+- [ ] Rate limiting and throttling
+- [ ] Data validation with Zod
+- [ ] Unit and integration tests
 
-### 🚀 Mediano Plazo
-- [ ] Chat privado entre usuarios
-- [ ] Sistema de reputación/karma
-- [ ] Menciones (@usuario)
-- [ ] Hashtags (#tema)
-- [ ] Feed de trending/popular
-- [ ] Guardados/favoritos
-- [ ] Compartir posts
-- [ ] Filtros de contenido
-- [ ] Moderación y reportes
+### 🚀 Medium Term
+- [ ] Private chat between users
+- [ ] Reputation/karma system
+- [ ] User mentions (@user)
+- [ ] Hashtags (#topic)
+- [ ] Trending/popular feed
+- [ ] Saved/favorites
+- [ ] Share posts
+- [ ] Content filters
+- [ ] Moderation and reports
 
-### 🌟 Largo Plazo
-- [ ] Integración con replays de osu!
-- [ ] Destacados de jugadas épicas
-- [ ] Sistema de torneos
-- [ ] Logros y badges personalizados
-- [ ] API pública con rate limits
-- [ ] Webhooks para eventos
-- [ ] Analytics y estadísticas
-- [ ] Soporte multilenguaje
-- [ ] App móvil (React Native)
+### 🌟 Long Term
+- [ ] Integration with osu! replays
+- [ ] Epic play highlights
+- [ ] Tournament system
+- [ ] Custom achievements and badges
+- [ ] Public API with rate limits
+- [ ] Event webhooks
+- [ ] Analytics and statistics
+- [ ] Multi-language support
+- [ ] Mobile app (React Native)
 
-## 📊 Modelo de Datos
+## 📊 Data Model
 
-### Entidades Principales
-- **OsuUser**: Usuarios con stats de osu!
-- **FeedItem**: Publicaciones del feed
-- **Comment**: Comentarios en posts
-- **Like**: Likes en posts y comentarios
-- **Follow**: Relaciones de seguimiento
-- **Tag**: Tags/intereses
+### Main Entities
+- **OsuUser**: Users with osu! stats
+- **FeedItem**: Feed posts
+- **Comment**: Post comments
+- **Like**: Likes on posts and comments
+- **Follow**: Following relationships
+- **Tag**: Tags/interests
 
-## 🤝 Contribuir
+## 🤝 Contributing
 
-Para contribuir al proyecto:
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/amazing-feature`)
-3. Commit tus cambios (`git commit -m 'Add amazing feature'`)
-4. Push a la rama (`git push origin feature/amazing-feature`)
-5. Abre un Pull Request
+To contribute to the project:
+1. Fork the repository
+2. Create a branch for your feature (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 Licencia
+## 📄 License
 
-MIT License - ver archivo LICENSE para más detalles
+MIT License - see LICENSE file for details
