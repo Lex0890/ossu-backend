@@ -5,11 +5,11 @@ import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import pino from 'pino';
-import authRoutes from '@routes/auth';
+import authRoutes from 'src/routes/auth';
 import cors from 'cors';
 import prisma from 'src/prisma';
 import authMiddleware from './middlewares/authMiddleware';
-import feedRoutes from '@routes/feed';
+import feedRoutes from 'src/routes/feed';
 
 const logger = pino({
   transport: {
@@ -54,9 +54,9 @@ app.get('/me', authMiddleware, async (req, res) => {
 });
 
 //if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`Server is running on http://localhost:${PORT}`);
-  });
+app.listen(PORT, '0.0.0.0', () => {
+  logger.info(`Server is running on http://localhost:${PORT}`);
+});
 //}
 
 //export default app;
