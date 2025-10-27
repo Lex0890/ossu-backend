@@ -13,15 +13,18 @@ import feedRoutes from './routes/feed';
 
 const { NODE_ENV } = process.env;
 
-const logger = pino({
-  transport: {
-    target: NODE_ENV ? '' : 'pino-pretty',
-    options: {
-      colorize: true,
-    },
-  },
-  level: process.env.LOG_LEVEL || 'info',
-});
+const logger =
+  NODE_ENV === 'production'
+    ? pino()
+    : pino({
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            colorize: true,
+          },
+        },
+        level: process.env.LOG_LEVEL || 'info',
+      });
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
