@@ -1,4 +1,4 @@
-import feed from '@controllers/feed';
+import feed from '../controllers/feed';
 import { Router } from 'express';
 import authMiddleware from '../middlewares/authMiddleware';
 
