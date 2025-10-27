@@ -1,6 +1,0 @@
-.env.local
-.env*.local
-bun.lock
-screen.png
-access.log
-dist
