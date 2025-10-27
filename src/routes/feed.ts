@@ -8,7 +8,7 @@ router.get('/', authMiddleware, feed.getFeed); // get feed
 router.post('/', authMiddleware, feed.createPost); // create a new post
 router.get('/:id', authMiddleware, feed.getPostbyId); // get a specific post
 router.put('/:id', authMiddleware, feed.updatePost); // update a specific post
-router.delete('/:id'); // delete a specific post
+router.delete('/:id', authMiddleware, feed.deletePost); // delete a specific post
 
 // complex feed route
 
