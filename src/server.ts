@@ -53,11 +53,11 @@ app.get('/me', authMiddleware, async (req, res) => {
   res.json(user);
 });
 
-//if (process.env.NODE_ENV !== 'production') {
-app.listen(PORT, '0.0.0.0', () => {
-  logger.info(`Server is running on http://localhost:${PORT}`);
-});
-//}
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, '0.0.0.0', () => {
+    logger.info(`Server is running on http://localhost:${PORT}`);
+  });
+}
 
-//export default app;
+export default app;
 export { logger };
