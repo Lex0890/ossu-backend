@@ -5,11 +5,11 @@ import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import pino from 'pino';
-import authRoutes from 'src/routes/auth';
+import authRoutes from './routes/auth';
 import cors from 'cors';
-import prisma from 'src/prisma';
+import prisma from './prisma';
 import authMiddleware from './middlewares/authMiddleware';
-import feedRoutes from 'src/routes/feed';
+import feedRoutes from './routes/feed';
 
 const logger = pino({
   transport: {

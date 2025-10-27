@@ -1,7 +1,7 @@
 import type { FeedItem } from '@prisma/client';
 import { Request, Response } from 'express';
-import prisma from 'src/prisma';
-import { logger } from 'src/server';
+import prisma from '../prisma';
+import { logger } from '../server';
 const feed = {
   async getFeed(req: Request, res: Response) {
     // logic to get the feed of posts

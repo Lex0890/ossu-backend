@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { OsuAccessToken, OsuUser } from '../types/osu';
-import prisma from 'src/prisma';
+import prisma from '../prisma';
 import * as jwt from 'jsonwebtoken';
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
 
