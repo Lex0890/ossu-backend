@@ -11,9 +11,11 @@ import prisma from './prisma';
 import authMiddleware from './middlewares/authMiddleware';
 import feedRoutes from './routes/feed';
 
+const { NODE_ENV } = process.env;
+
 const logger = pino({
   transport: {
-    target: 'pino-pretty',
+    target: NODE_ENV ? '' : 'pino-pretty',
     options: {
       colorize: true,
     },
